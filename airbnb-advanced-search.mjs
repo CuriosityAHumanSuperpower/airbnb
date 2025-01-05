@@ -1,9 +1,10 @@
+//imports
 import axios from 'axios'
 import {load} from 'cheerio'
 import {findAllPathsOfNestedObject} from './nestedObjectsFunctions.mjs'
 import {getValueONestedObjectFromPath} from './nestedObjectsFunctions.mjs'
 
-//Airbnb request setting 
+//default Airbnb request setting 
 const params = {
   refinement_paths: '/homes',
   monthly_start_date: '2025-05-01',
@@ -30,6 +31,14 @@ const config = {
     url: 's/Île~de~France--France/homes',
     params
 };
+
+/**
+ * Seach on Aibnb.fr, filter on the website given your need and then overwrite the URL parameters
+ */
+if (false) {
+    config.url = ""
+    delete config.params
+}
 
 async function getAirbnbPageData(config) {
     //HTTPS response 
@@ -83,7 +92,7 @@ const mapping = {
 
 const mappedHosts = hosts.map(el => {
     const hosting = {}
-    for (const [mapKey, mapValue] of  Object.entries(mapping)){
+    for (const [mapKey, mapValue] of Object.entries(mapping)){
         hosting[mapKey] = getValueONestedObjectFromPath(el, mapValue)
     }
     return hosting
